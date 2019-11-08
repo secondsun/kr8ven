@@ -1,4 +1,4 @@
-package dev.secondsun;
+package dev.secondsun.rest;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dev.secondsun.vo.Repository;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 @Path("/mirror")
@@ -22,11 +23,11 @@ public class MirrorResource {
 
 
     @GET
-    @Path("/{path:.*}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response hello(@PathParam("path") String path) {
-        LOGGER.info("in hello with " + path);
-        String url = "https://repo1.maven.org/maven2/" + path;
+    @Path("/{repositoryIdentifier}/{path:.*}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response hello(@PathParam("repositoryIdentifier") String repoId, @PathParam("path") String path) {
+        Repository repo = Repository.findByIdentifier(repoId);
+        String url = repo.remoteUrl + path;
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
         ByteArrayOutputStream fileOutputStream = new ByteArrayOutputStream()) {
           byte dataBuffer[] = new byte[1024];
@@ -34,7 +35,7 @@ public class MirrorResource {
           while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
               fileOutputStream.write(dataBuffer, 0, bytesRead);
           }
-          return Response.status(200).type(MediaType.TEXT_XML_TYPE).entity(fileOutputStream.toByteArray()).build();
+          return Response.status(200).type(MediaType.APPLICATION_OCTET_STREAM).entity(fileOutputStream.toByteArray()).build();
       } catch (IOException e) {
           LOGGER.log(Level.SEVERE, e.getMessage(), e );
         return Response.status(500).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();

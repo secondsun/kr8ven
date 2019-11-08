@@ -1,0 +1,4 @@
+.idea/*
+target/*
+*.iml
+stale_outputs_checked
