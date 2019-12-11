@@ -10,13 +10,9 @@ import {
   PageSidebar,
   SkipToContent
 } from '@patternfly/react-core';
-import { routes } from '@app/routes';
+import { routes } from '../routes';
 
-interface IAppLayout {
-  children: React.ReactNode;
-}
-
-const AppLayout: React.FunctionComponent<IAppLayout> = ({children}) => {
+const AppLayout = ({children}) => {
   const logoProps = {
     href: '/',
     target: '_blank'
@@ -30,7 +26,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({children}) => {
   const onNavToggle = () => {
     setIsNavOpen(!isNavOpen);
   }
-  const onPageResize = (props: { mobileView: boolean; windowSize: number }) => {
+  const onPageResize = (props) => {
     setIsMobileView(props.mobileView);
   };
   const Header = (

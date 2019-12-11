@@ -1,12 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 
 const BG_IMAGES_DIRNAME = 'bgimages';
 
 module.exports = {
   entry: {
-    app: path.resolve(__dirname, 'src', 'index.tsx')
+    app: path.resolve(__dirname, 'src', 'index.jsx')
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -15,18 +15,8 @@ module.exports = {
   ],
   module: {
     rules: [
-      {
-        test: /\.(tsx|ts|jsx)?$/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              experimentalWatchApi: true,
-            }
-          }
-        ]
-      },
+      { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "babel-loader" },
+    
       {
         test: /\.(svg|ttf|eot|woff|woff2)$/,
         // only process modules with this loader
@@ -117,12 +107,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    plugins: [
-      new TsconfigPathsPlugin({
-        configFile: path.resolve(__dirname, './tsconfig.json')
-      })
-    ],
+    extensions: ['.js', '.jsx'],
+    
     symlinks: false,
     cacheWithContext: false
   },

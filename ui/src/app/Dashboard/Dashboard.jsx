@@ -17,7 +17,7 @@ import {
   DataListAction
 } from '@patternfly/react-core';
 
-const Dashboard: React.FunctionComponent<{}> = (props) => {
+const Dashboard = (props) => {
 
   if (!props.repositories || props.repositories.length == 0) {
     props.load();

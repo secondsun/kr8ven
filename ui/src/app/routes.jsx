@@ -1,24 +1,24 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Alert, PageSection } from '@patternfly/react-core';
-import { DynamicImport } from '@app/DynamicImport';
-import { accessibleRouteChangeHandler } from '@app/utils/utils';
-import  Dashboard  from '@app/Dashboard/Dashboard';
-import { NotFound } from '@app/NotFound/NotFound';
-import { useDocumentTitle } from '@app/utils/useDocumentTitle';
+import { DynamicImport } from './DynamicImport';
+import { accessibleRouteChangeHandler } from './utils/utils';
+import  Dashboard  from './Dashboard/Dashboard';
+import { NotFound } from './NotFound/NotFound';
+import { useDocumentTitle } from './utils/useDocumentTitle';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
 
-let routeFocusTimer: number;
+let routeFocusTimer;
 
-const getSupportModuleAsync = () => () => import(/* webpackChunkName: 'support' */ '@app/Support/Support');
+const getSupportModuleAsync = () => () => import(/* webpackChunkName: 'support' */ './Support/Support');
 
-const Support = (routeProps: RouteComponentProps) => {
+const Support = (routeProps) => {
   const lastNavigation = useLastLocation();
   return (
     /* eslint-disable @typescript-eslint/no-explicit-any */
     <DynamicImport load={getSupportModuleAsync()} focusContentAfterMount={lastNavigation !== null}>
-      {(Component: any) => {
-        let loadedComponent: any;
+      {(Component) => {
+        let loadedComponent;
         /* eslint-enable @typescript-eslint/no-explicit-any */
         if (Component === null) {
           loadedComponent = (
@@ -37,18 +37,7 @@ const Support = (routeProps: RouteComponentProps) => {
   );
 };
 
-export interface IAppRoute {
-  label?: string;
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
-  exact?: boolean;
-  path: string;
-  title: string;
-  isAsync?: boolean;
-}
-
-const routes: IAppRoute[] = [
+const routes = [
   {
     component: Dashboard,
     exact: true,
@@ -69,7 +58,7 @@ const routes: IAppRoute[] = [
 // a custom hook for sending focus to the primary content container
 // after a view has loaded so that subsequent press of tab key
 // sends focus directly to relevant content
-const useA11yRouteChange = (isAsync: boolean) => {
+const useA11yRouteChange = (isAsync) => {
   const lastNavigation = useLastLocation();
   React.useEffect(() => {
     if (!isAsync && lastNavigation !== null) {
@@ -86,11 +75,11 @@ const RouteWithTitleUpdates = ({
   isAsync = false,
   title,
   ...rest
-}: IAppRoute) => {
+}) => {
   useA11yRouteChange(isAsync);
   useDocumentTitle(title);
 
-  function routeWithTitle(routeProps: RouteComponentProps) {
+  function routeWithTitle(routeProps) {
     return (
       <Component {...rest} {...routeProps} />
     );
@@ -99,7 +88,7 @@ const RouteWithTitleUpdates = ({
   return <Route render={routeWithTitle} />;
 };
 
-const PageNotFound = ({ title }: { title: string }) => {
+const PageNotFound = ({ title }) => {
   useDocumentTitle(title);
   return <Route component={NotFound} />;
 }

@@ -11,11 +11,8 @@ import {
   EmptyStateSecondaryActions
 } from '@patternfly/react-core';
 
-export interface ISupportProps {
-  sampleProp?: string;
-}
 
-const Support: React.FunctionComponent<ISupportProps> = () => (
+const Support = () => (
     <PageSection>
       <EmptyState variant={EmptyStateVariant.full}>
         <EmptyStateIcon icon={CubesIcon} />
