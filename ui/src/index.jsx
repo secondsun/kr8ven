@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "production") {
 ReactDOM.render( 
   
   <Provider store={configureStore()}>
-    <App />
+    <App className="pf-m-redhat-font" />
   </Provider>, 
   
   document.getElementById("root"));

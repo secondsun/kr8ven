@@ -43,7 +43,7 @@ const AppLayout = ({children}) => {
   const Navigation = (
     <Nav id="nav-primary-simple" theme="dark">
       <NavList id="nav-list-simple" variant={NavVariants.default}>
-        {routes.map((route, idx) => route.label && (
+        {routes.filter(({show})=>{return !!show}).map((route, idx) => route.label && (
             <NavItem key={`${route.label}-${idx}`} id={`${route.label}-${idx}`}>
               <NavLink exact to={route.path} activeClassName="pf-m-current">{route.label}</NavLink>
             </NavItem>

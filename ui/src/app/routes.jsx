@@ -3,10 +3,11 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Alert, PageSection } from '@patternfly/react-core';
 import { DynamicImport } from './DynamicImport';
 import { accessibleRouteChangeHandler } from './utils/utils';
-import  Dashboard  from './Dashboard/Dashboard';
+import RepositoryHome from './Repository/RepositoryHome';
 import { NotFound } from './NotFound/NotFound';
 import { useDocumentTitle } from './utils/useDocumentTitle';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
+import { RepositoryForm } from './Repository/RepositoryForm';
 
 let routeFocusTimer;
 
@@ -39,11 +40,27 @@ const Support = (routeProps) => {
 
 const routes = [
   {
-    component: Dashboard,
+    component: RepositoryHome,
     exact: true,
-    label: 'Dashboard',
+    label: 'Respoitories',
+    path: '/repositories',
+    title: 'Respoitories',
+    show:true
+  },{
+    component: RepositoryForm,
+    exact: true,
+    label: 'Create Repository',
+    path: '/repositories/create',
+    title: 'Create Repository',
+    show:false
+  },
+  {
+    component: RepositoryHome,
+    exact: true,
+    label: 'Home',
     path: '/',
-    title: 'Main Dashboard Title'
+    title: 'Home',
+    show:true
   },
   {
     component: Support,
@@ -51,7 +68,8 @@ const routes = [
     isAsync: true,
     label: 'Support',
     path: '/support',
-    title: 'Support Page Title'
+    title: 'Support Page Title',
+    show:true
   }
 ];
 
